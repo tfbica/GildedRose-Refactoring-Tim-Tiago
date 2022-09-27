@@ -17,7 +17,7 @@ public class GlidedRoseAgedBrieTest {
     }
 
     @Test
-    void shall_increase_quality_by_2_when_sellIn_is_10() {
+    void shall_increase_quality_by_2_when_sellIn_is_0() {
         Item[] items = new Item[] { new Item("Aged Brie", 0, 2) };
         GildedRose app = new GildedRose(items);
         app.updateQuality();
@@ -35,4 +35,5 @@ public class GlidedRoseAgedBrieTest {
         assertEquals(9, app.items[0].sellIn);
         assertEquals(50, app.items[0].quality);
     }
+
 }
