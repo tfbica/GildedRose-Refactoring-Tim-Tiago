@@ -24,7 +24,7 @@ class GildedRose {
                         }
                     }
                 }
-            } else if (!isSulfuras(items[i])){
+            } else if (isRegularItem(items[i])){
                 if (items[i].quality > 0) {
                     decrementQuality(items[i]);
                 }
@@ -39,19 +39,19 @@ class GildedRose {
                     if (items[i].quality < 50) {
                         incrementQuality(items[i]);
                     }
-                } else {
-                    if (isBackstage(items[i])) {
-                        zeroQuality(items[i]);
-                    } else {
-                        if (!isSulfuras(items[i])) {
-                            if (items[i].quality > 0) {
-                                decrementQuality(items[i]);}
-                        }
+                }
+                if (isBackstage(items[i])) {
+                    zeroQuality(items[i]);
+                }
+                if (isRegularItem(items[i])) {
+                    if (items[i].quality > 0) {
+                        decrementQuality(items[i]);
                     }
                 }
             }
         }
     }
+
 
     private boolean isSulfuras(Item item) {
         return item.name.equals("Sulfuras, Hand of Ragnaros");
@@ -66,12 +66,8 @@ class GildedRose {
     }
 
     private boolean isRegularItem(Item item) {
-        if (!item.name.equals("Aged Brie")) {
-            if (!isBackstage(item)) {
-                if (!item.name.equals("Sulfuras, Hand of Ragnaros")) {
-                    return true;
-                }
-            }
+        if (!isAgedBrie(item) && !isBackstage(item) && !isSulfuras(item)) {
+            return true;
         }
         return false;
     }
