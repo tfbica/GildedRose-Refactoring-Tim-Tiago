@@ -25,61 +25,82 @@ class GildedRose {
                     }
                 }
             }
-            if (isRegularItem(items[i])){
-                if (items[i].quality > 0) {
-                    decrementQuality(items[i]);
-                }
-            }
 
             if (!isSulfuras(items[i])) {
                 decrementSellIn(items[i]);
             }
+            if (isAgedBrie(items[i])) {
+                updateAgedBrie(items[i]);
+            }
+            if (isBackstage(items[i])) {
+                updateBackstage(items[i]);
+            }
 
-            if (items[i].sellIn < 0) {
-                if (isAgedBrie(items[i]) && items[i].quality < 50) {
-                    incrementQuality(items[i]);
-                }
-                if (isBackstage(items[i])) {
-                    zeroQuality(items[i]);
-                }
-                if (isRegularItem(items[i]) && items[i].quality > 0) {
-                    decrementQuality(items[i]);
-                }
+//            Not sure why removing the duplication of updating regular item quality fails the tests
+            if (isRegularItem(items[i])){
+                updateRegularItem(items[i]);
             }
         }
-
     }
 
-    private int decrementSellIn(Item item) {
-        return item.sellIn--;
+    private void incrementQuality(Item item) {
+        item.quality ++;
     }
 
-
-    private boolean isSulfuras(Item item) {
-        return item.name.equals("Sulfuras, Hand of Ragnaros");
+    private void decrementQuality(Item item) {
+        item.quality --;
     }
 
-    private boolean isBackstage(Item item) {
-        return item.name.equals("Backstage passes to a TAFKAL80ETC concert");
+    private void zeroQuality(Item item) {
+        item.quality = 0;
     }
 
-    private boolean isAgedBrie(Item item) {
-        return item.name.equals("Aged Brie");
+    private void decrementSellIn(Item item) {
+        item.sellIn --;
     }
 
     private boolean isRegularItem(Item item) {
         return !isAgedBrie(item) && !isBackstage(item) && !isSulfuras(item);
     }
 
-    private void incrementQuality(Item item) {
-        item.quality++;
+    private void updateRegularItem(Item item) {
+        if (item.sellIn < 0 && item.quality > 1) {
+            decrementQuality(item);
+            decrementQuality(item);
+        } else {
+            decrementQuality(item);
+        }
     }
 
-    private void decrementQuality(Item item) {
-        item.quality--;
+    private boolean isAgedBrie(Item item) {
+        return item.name.equals("Aged Brie");
     }
 
-    private void zeroQuality(Item item) {
-        item.quality = 0;
+    private void updateAgedBrie(Item item) {
+        if (item.sellIn < 0 && item.quality < 50) {
+            incrementQuality(item);
+        }
     }
+
+    private boolean isBackstage(Item item) {
+        return item.name.equals("Backstage passes to a TAFKAL80ETC concert");
+    }
+
+    private void updateBackstage(Item item) {
+        if (item.sellIn < 0) {
+            zeroQuality(item);
+        }
+    }
+
+    private boolean isSulfuras(Item item) {
+        return item.name.equals("Sulfuras, Hand of Ragnaros");
+    }
+
+    private void updateSulfuras(Item item) {
+
+    }
+
+
+
+
 }
